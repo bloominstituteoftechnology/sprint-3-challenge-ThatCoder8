@@ -18,7 +18,6 @@
     .widget p {
       font-style: italic;
     }
-
   </style>
 </head>
 
@@ -59,6 +58,48 @@
       // ❗ WARNING: except for `getAllReversed`, methods must respect the order of the integers
       // ❗ WARNING: note that none of the methods actually mutate the `ints` property
 
+
+      constructor(...args) {
+        this.ints = args;
+      }
+
+      getAll() {
+        return this.ints;
+      }
+
+      getEvens() {
+        return this.ints.filter(num => num % 2 === 0);
+      }
+
+      getNegatives() {
+        return this.ints.filter(num => num < 0);
+      }
+
+      getAllSquared() {
+        return this.ints.map(num => num ** 2);
+      }
+
+      pop() {
+        return this.ints.pop();
+      }
+
+      push(int) {
+        this.ints.push(int);
+        return this.ints;
+      }
+
+      getEveryNth(n) {
+        const result = [];
+        for (let i = 0; i < this.ints.length; i += n) {
+          result.push(this.ints[i])
+        }
+        return result
+      }
+
+      // 🧠 Implement a `getAllReversed` method which returns the ints in reverse order
+      getAllReversed() {
+        return this.ints.slice().reverse();
+      }
     }
 
     // 👉 CHALLENGE 2 NerfGun
@@ -77,6 +118,36 @@
       //      * When disengaging the safety, return "Safety disabled!"
       // 🌟 HINT: instances need to keep track of their maximum capacity as well as their current capacity
 
+
+      constructor(capacity) {
+        this.maxCapacity = capacity;
+        this.projectiles = capacity;
+        this.safety = true
+      }
+
+      shoot() {
+        if (this.projectiles > 0 && !this.safety) {
+          this.projectiles -= 1
+          return "Bang!";
+        } else {
+          return "Click!"
+        }
+      }
+
+        reload(n) {
+        if (typeof n !== 'number' || n <= 0) {
+          return "Error reloading!";} else {
+            this.projectiles = Math.min(this.projectiles + n, this.maxCapacity)
+          return `${this.projectiles} projectiles left!`;
+        }
+      }
+
+        toggleSafety()  {
+         this.safety = !this.safety;
+         if (this.safety) {return "Safety enabled!"
+        } else { return "Safety disabled!"
+        }  
+      } 
     }
 
     // 👉 CHALLENGE 3 EBook
@@ -95,7 +166,24 @@
       //    ebook.next() // returns null
       // 🌟 HINT: remember about the `slice` method which strings and arrays have
       // ❗ Feel free to implement `back`, although this is not required nor graded
+      constructor(string, number) {
+        this.text = string
+        this.number = number
+        this.currentPage = 0
+      }
 
+      next() {
+       let start = this.number * this.currentPage;
+       let end = start + this.number
+
+       if (start >= this.text.length) {
+        return null
+       }
+
+      let page = this.text.slice(start, end);
+      this.currentPage++;
+      return page;
+      }
     }
 
     // 👉 CHALLENGE 4 AntFarm
@@ -130,8 +218,36 @@
       //      console.log(list) // prints ["a"]
       // 👉 HINT: if you are not feeling confident with map and filter, solve the problem with for loops,
       //      and with the piece of mind of all tests passing, refactor to use map/filter
+        constructor(...args){
+        this.ants = args.map(name => ({name, health: 100})); }
 
+        work() {
+          if (this.ants.length === 0) {
+            return "No ants here. Did you work them to death?";
+          } else {
+            let message = `${this.ants.length} ants starting work!`
+      this.ants.forEach(ant => {ant.health -= 20});
+      this.ants = this.ants.filter(ant => ant.health > 0);
+      return message;
     }
+  }
+  feed(name) {
+
+    let fed = false
+
+    this.ants = this.ants.map(ant => {
+      if (ant.name === name) {
+        ant.health +=15; 
+        fed = true
+      }
+      return ant
+    })
+
+    if (fed) {
+      return 'Yum!'
+    } else {
+      return`${name} not found!`
+    } } }
 
     // 🧪 TESTS, do not make any changes below this line ===================
     // 🧪 TESTS, do not make any changes below this line ===================
